@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:unihack/order_traking_page.dart';
 import 'package:unihack/proflie_screen.dart';
 import 'package:unihack/signup.dart';
 class LoginScreen extends StatefulWidget {
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             print(user);
                             if(user!=null)
                             {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ProfileScreen()));
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>OrderTrackingPage()));
                             }
                           }
                       ),
