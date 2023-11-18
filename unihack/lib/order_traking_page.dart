@@ -4,18 +4,29 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:unihack/second_page.dart';
+
+import 'custom_page_route.dart';
 
 class OrderTrackingPage extends StatefulWidget {
   const OrderTrackingPage({Key? key}) : super(key: key);
 
   @override
-  State<OrderTrackingPage> createState() => OrderTrackingPageState();
+  State<OrderTrackingPage> createState() => _OrderTrackingPageState();
 }
 
-class OrderTrackingPageState extends State<OrderTrackingPage> {
+class _OrderTrackingPageState extends State<OrderTrackingPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
 //Linia 9
+
+bool isMenuOpen = false;
+  bool isDrawerOpen = false; // Track the state of the drawer
+  int selectedIndex = -1;
+  int selectedSubItemIndex = -1;
+  int selectedSubGroupIndex = -1;
+  int selectedGroupIndex = -1;
+  bool showSubItems = false;
 
 List<LatLng> polylineCoordinates9= [stat91, stat92 , stat93 , stat94 ,stat95,stat96,stat97,stat98,stat99 ,stat910, stat911, stat912, stat913, stat914, stat915, stat916, stat917, stat918, destination9];
 
@@ -169,13 +180,28 @@ void getPolyPoints() async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Track order",
-          style: TextStyle(color: Colors.black, fontSize: 16),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: AppBar(
+          title: Row(
+            children: [
+              SearchBar(),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.person),
+                color: Color.fromARGB(255, 179, 157, 219),
+                onPressed: () {
+                  Navigator.of(context).push(customPageRoute(SecondPage()));
+                },
+              ),
+            ],
+          ),
         ),
       ),
-      body: GoogleMap(
+      body: Stack(
+        children: [
+           Center(
+            child: GoogleMap(
         initialCameraPosition: CameraPosition(
          target: sourceLocation9,
          zoom: 15
@@ -304,7 +330,305 @@ void getPolyPoints() async{
           )
 
        },
-      ), 
+      ),
+          ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            bottom: isMenuOpen ? 0 : -MediaQuery.of(context).size.height * 0.7,
+            left: 0,
+            right: 0,
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: 40,
+                    color: Color.fromARGB(255, 179, 157, 219),
+                    child: const Center(
+                      child: Text(
+                        'Menu Header',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildMenuItem('Buses', 'assets/images/bus_icon.png', 0),
+                        _buildMenuItem('Hours', 'assets/images/time-icon.png', 1),
+                        _buildMenuItem('Places', 'assets/images/tree-icon.png', 2),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1, color: Colors.black),
+                  if (showSubItems)
+                    if(selectedGroupIndex == 0)
+                      Column(  
+                        children: [
+                          _buildSubItemsRow(['33', '40', 'E1'], 'Bus', 1),
+                          _buildSubItemsRow(['2', '7', '9'], 'Tram', 2),
+                          _buildSubItemsRow(['11', '14', '17'], 'Trolley', 3),
+                        ],
+                      ),
+                    if(selectedGroupIndex == 1)
+                      Column(
+                        children: [
+                          _buildSubItemsRow(['Bus', 'Tramv', "Trolley"], 'Transport' ,4),
+                        ],
+                      ),
+                  const Expanded(
+                    child: Center(
+                      child: Text('Choose an option'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              isMenuOpen = !isMenuOpen;
+            });
+          },
+          child: Icon(isMenuOpen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+    );
+
+  }
+  Widget _buildMenuItem(String title, String imagePath, int index) {
+    bool isSelected = index == selectedIndex;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedGroupIndex = index;
+          selectedSubGroupIndex = index;
+          selectedSubItemIndex = -1;
+          selectedIndex = index;
+          showSubItems = title == 'Buses'; // Show sub items only for 'Buses'
+        });
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.deepPurple[200] : Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.0,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                imagePath,
+                width: 40,
+                height: 40,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: const TextStyle(fontSize: 12, color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubItemsRow(List<String> subItems, String subtitle, int groupId) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(
+          subtitle,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for (int k=0;k<subItems.length;k++) _buildSubItem(subItems[k], k+1, groupId),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+  Widget _buildSubItem(String title, int index, int groupIndex) {
+    bool isSelected = ((index == selectedSubItemIndex) && (groupIndex==selectedSubGroupIndex));
+    //print("Index, selIndex, grIndex, selGrIndex $index, $selectedSubItemIndex, $groupIndex, $selectedGroupIndex, -> $isSelected");
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedSubItemIndex = index;
+          selectedSubGroupIndex = groupIndex;
+          if(selectedGroupIndex == 0)
+            isMenuOpen = false;
+        });
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: isSelected? Colors.deepPurple[200] : Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black,
+                width: 1.0,
+              ),
+            ),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
+            ),
+          ),
+          ),
+        ),
+      ),
     );
   }
 }
+class SearchBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        onTap: () {
+          // Show a search box when the user taps on the search bar
+          showSearch(
+            context: context,
+            delegate: BusLineSearchDelegate(
+              ['Bus Line 33', 'Bus Line 40', 'Bus Line E1', 'Tram 2', 'Tram 7', 'Tram 9', 'Trolley 11', 'Trolley 14', 'Trolley17']
+              ),
+          );
+        },
+        child: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          padding: const EdgeInsets.all(8.0),
+          child: const Icon(
+            Icons.search,
+            size: 24.0,
+            color: Color.fromARGB(255, 179, 157, 219),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BusLineSearchDelegate extends SearchDelegate<String> {
+  final List<String> busLines;
+
+  BusLineSearchDelegate(this.busLines);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return buildSuggestions(context);
+  }
+
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final List<String> filteredList = busLines
+        .where((line) => line.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    filteredList.sort();
+
+    return ListView.builder(
+      itemCount: filteredList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(filteredList[index]),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BusLineDetailsPage(
+                  index: busLines.indexOf(filteredList[index]),
+                  busLine: filteredList[index],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+
+
+
+class BusLineDetailsPage extends StatelessWidget {
+  final int index;
+  final String busLine;
+
+  BusLineDetailsPage({required this.index, required this.busLine});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bus Line $index Details'),
+      ),
+      body: Center(
+        child: Text('Details about $busLine'),
+      ),
+    );
+  }
+}
+
+
