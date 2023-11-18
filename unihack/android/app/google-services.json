@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "62642189089",
+    "project_id": "unihack2023-46a64",
+    "storage_bucket": "unihack2023-46a64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62642189089:android:6fbd83b614dadfc4448460",
+        "android_client_info": {
+          "package_name": "com.example.unihack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0IN7F8Gyq_pTZzS-7TOzVX4BdlRW9B9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
