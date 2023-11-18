@@ -1,0 +1,5 @@
+D:/Informatica/Flutter/Projects/Unihack2023/UniHack_2023/build/CMakeFiles/flutter_wrapper_plugin.dir
+D:/Informatica/Flutter/Projects/Unihack2023/UniHack_2023/build/CMakeFiles/flutter_wrapper_app.dir
+D:/Informatica/Flutter/Projects/Unihack2023/UniHack_2023/build/CMakeFiles/flutter_assemble.dir
+D:/Informatica/Flutter/Projects/Unihack2023/UniHack_2023/build/CMakeFiles/ALL_BUILD.dir
+D:/Informatica/Flutter/Projects/Unihack2023/UniHack_2023/build/CMakeFiles/ZERO_CHECK.dir

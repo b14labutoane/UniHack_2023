@@ -62,6 +62,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_hooks:
+    dependency: "direct main"
+    description:
+      name: flutter_hooks
+      sha256: "7c8db779c2d1010aa7f9ea3fbefe8f86524fcb87b69e8b0af31e1a4b55422dec"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -75,6 +83,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  functional_widget_annotation:
+    dependency: "direct main"
+    description:
+      name: functional_widget_annotation
+      sha256: f0612079cb7e226b7be32b473bdaf85fe680370886c0c13ea69a102ccc17a0c7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.0"
   lints:
     dependency: transitive
     description:
@@ -186,3 +202,4 @@ packages:
     version: "0.3.0"
 sdks:
   dart: ">=3.2.0 <4.0.0"
+  flutter: ">=3.0.0"
