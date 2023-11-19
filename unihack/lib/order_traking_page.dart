@@ -88,6 +88,8 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
 
 //Linia 9
 
+  
+
   bool isMenuOpen = false;
   bool isDrawerOpen = false; // Track the state of the drawer
   int selectedIndex = -1;
@@ -95,6 +97,11 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
   int selectedSubGroupIndex = -1;
   int selectedGroupIndex = -1;
   bool showSubItems = false;
+
+  int PressedGroupindex = -1;
+  int PressedSubGroupIndex = -1;
+  bool buttonPressed = false;
+  
 
   List<LatLng> polylineCoordinates9 = [
     stat91,
@@ -448,6 +455,40 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
 
   @override
   Widget build(BuildContext context) {
+    if(buttonPressed && selectedGroupIndex == 0) {
+      print("$PressedGroupindex and $PressedSubGroupIndex");
+      buttonPressed = false;
+      isVis33=false;
+      isVis9=false;
+      isVis11=false;
+      isVis14=false;
+      isVis17=false;
+      switch(PressedGroupindex) {
+        case 1:
+          if(PressedSubGroupIndex==1){
+            isVis33 = true;
+          }
+          break;
+        case 2:
+          if(PressedSubGroupIndex==3){
+            isVis9 = true;
+          }
+          break;
+        case 3:
+          switch(PressedSubGroupIndex) {
+            case 1:
+              isVis11 = true;
+              break;
+            case 2:
+              isVis14 = true;
+              break;
+            case 3:
+              isVis17 = true;
+              break;
+          }
+          break;
+        }
+    }
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
@@ -781,6 +822,10 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
     return GestureDetector(
       onTap: () {
         setState(() {
+          buttonPressed = true;
+          PressedGroupindex = groupIndex;
+          PressedSubGroupIndex = index;
+
           selectedSubItemIndex = index;
           selectedSubGroupIndex = groupIndex;
           if (selectedGroupIndex == 0) isMenuOpen = false;
