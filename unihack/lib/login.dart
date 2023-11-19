@@ -46,7 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const FlutterLogo(size: 100),
+                    const CircleAvatar(
+                      backgroundImage:AssetImage('assets/images/logom2g.png'),
+                       radius: 75,
+                    ),
                     _gap(),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -66,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _gap(),
                     TextFormField(
                       controller: _emailController,
+                      
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         hintText: 'Enter your email',
@@ -100,7 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                              borderRadius: BorderRadius.circular(0)),
+                              
                         ),
                         child: const Padding(
                           padding: EdgeInsets.all(10.0),

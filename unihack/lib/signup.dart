@@ -48,13 +48,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const FlutterLogo(size: 100),
+                    const CircleAvatar(
+                      backgroundImage:AssetImage('assets/images/logom2g.png'),
+                       radius: 75,
+                    ),
                     _gap(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         "Welcome to Move2gether!",
-                        style: Theme.of(context).textTheme.headline5,
+                        style: TextStyle(fontSize: 21,),
+                      
                       ),
                     ),
                     Padding(
@@ -145,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            'Allready have an account',
+                            'Already have an account',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -167,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text(
-                            'Sign in',
+                            'Sign Up',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
